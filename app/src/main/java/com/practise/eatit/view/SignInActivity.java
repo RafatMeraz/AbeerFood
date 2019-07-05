@@ -36,6 +36,7 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
         mAuth = FirebaseAuth.getInstance();
 
         signInBinding.signInSignButton.setOnClickListener(this);
+        signInBinding.forgotPassTV.setOnClickListener(this);
     }
 
     @Override
@@ -47,6 +48,9 @@ public class SignInActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     DynamicToast.makeError(getApplicationContext(), "Please turn on your internet", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case R.id.forgotPassTV:
+                startActivity(new Intent(getApplicationContext(), ForgotPasswordActivity.class));
                 break;
         }
     }

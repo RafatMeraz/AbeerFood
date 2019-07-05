@@ -7,16 +7,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/my_bg">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="200dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="56dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/logo_eat_it"
+            android:src="@drawable/abeerlogo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.448"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +28,7 @@
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/biscay"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
@@ -42,11 +44,12 @@
                 android:id="@+id/signUpPhoneNumEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/softWhite"
+                android:drawableRight="@drawable/ic_phone_black_24dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -60,7 +63,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,10 +74,11 @@
                 android:id="@+id/signUpEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
                 android:hint="@string/email"
+                android:drawableRight="@drawable/ic_mail_outline_black_24dp"
                 android:inputType="textEmailAddress"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textColorHint="@color/softWhite"
                 tools:layout_editor_absoluteY="11dp" />
 
@@ -87,7 +91,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/biscay"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,11 +104,12 @@
                 android:id="@+id/signUpFullNameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
                 android:hint="@string/full_name"
                 android:inputType="textPersonName"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/softWhite"
+                android:drawableRight="@drawable/ic_person_outline_black_24dp"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -118,10 +123,10 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/softWhite"
+            app:passwordToggleTint="@color/biscay"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
@@ -131,11 +136,11 @@
                 android:id="@+id/signUpUserPassEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/softWhite"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -149,7 +154,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="32dp"
-            android:background="@color/btnSignActive"
+            android:background="@color/biscay"
             android:text="@string/sign_in"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.OrderStatusActivity"></activity>
+        <activity android:name=".view.ForgotPasswordActivity"></activity>
+        <activity android:name=".view.OrderStatusActivity" />
 
         <service
             android:name=".services.ListenOrder"

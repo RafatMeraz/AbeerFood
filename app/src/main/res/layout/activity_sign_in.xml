@@ -7,16 +7,18 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/my_bg">
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/logo_eat_it"
+            android:src="@drawable/abeerlogo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,10 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="68dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:textColorHint="@android:color/white"
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,11 +43,13 @@
                 android:id="@+id/signInEmailEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
+                android:drawableEnd="@drawable/ic_mail_outline_black_24dp"
+                android:drawableRight="@drawable/ic_mail_outline_black_24dp"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/softWhite"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -56,28 +60,27 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:textColorHint="@android:color/white"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            app:passwordToggleEnabled="true"
-            app:passwordToggleTint="@color/softWhite"
-
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/biscay"
             tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/signInPassEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/white"
+                android:backgroundTint="@color/biscay"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/softWhite"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/tel"
                 tools:layout_editor_absoluteY="11dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -92,13 +95,29 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="8dp"
-            android:background="@color/btnSignUp"
             android:text="@string/sign_in"
+            android:background="@color/biscay"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
+        <TextView
+            android:id="@+id/forgotPassTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="26dp"
+            android:text="Forgot Password"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/biscay"
+            android:padding="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

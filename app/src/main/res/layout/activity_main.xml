@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.MainActivity"
-        android:background="@drawable/my_bg">
+        android:background="@drawable/bg">
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:background="@color/btnSignUp"
+                android:background="@color/biscay"
                 android:elevation="8dp"
                 android:text="@string/sign_up"
                 android:textColor="@android:color/white"
@@ -41,7 +41,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:elevation="8dp"
-                android:background="@color/btnSignActive"
+                android:background="@color/tel"
                 android:text="@string/sign_in"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -52,18 +52,18 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginStart="107dp"
-            android:layout_marginLeft="107dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="160dp"
-            android:layout_marginEnd="104dp"
-            android:layout_marginRight="104dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/logo_eat_it" />
+            app:srcCompat="@drawable/abeerlogo" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/tag"
-                android:textColor="@android:color/white"
+                android:textColor="@color/biscay"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
