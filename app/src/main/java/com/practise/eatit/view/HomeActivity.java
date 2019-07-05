@@ -158,6 +158,7 @@ public class HomeActivity extends AppCompatActivity
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.child(mAuth.getCurrentUser().getUid()).getValue(User.class);
                 if (user != null){
+                    Common.currentUser = user;
                     navUserNameTV.setText(user.getUserName());
                     navEmailTV.setText(mAuth.getCurrentUser().getEmail());
                 }
@@ -243,6 +244,7 @@ public class HomeActivity extends AppCompatActivity
 
     private void logOut() {
         FirebaseAuth.getInstance().signOut();
+        Common.currentUser = null;
         finish();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
