@@ -26,6 +26,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.practise.eatit.R;
 import com.practise.eatit.ViewHolder.FoodViewHolder;
 import com.practise.eatit.ViewHolder.MenuViewHolder;
+import com.practise.eatit.database.DatabaseHandler;
 import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Category;
 import com.practise.eatit.model.Food;
@@ -36,7 +37,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodList extends AppCompatActivity {
+public class FoodList extends AppCompatActivity implements View.OnClickListener {
 
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
@@ -47,6 +48,7 @@ public class FoodList extends AppCompatActivity {
     List<String> suggestList = new ArrayList<>();
     FirebaseRecyclerAdapter<Food, FoodViewHolder> searchAdapter;
     MaterialSearchBar materialSearchBar;
+    private DatabaseHandler localDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class FoodList extends AppCompatActivity {
         //Firebase initialization
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Foods");
+        localDatabase = new DatabaseHandler(this);
 
         recyclerView = findViewById(R.id.foodListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -132,7 +135,7 @@ public class FoodList extends AppCompatActivity {
 
         searchAdapter = new FirebaseRecyclerAdapter<Food, FoodViewHolder>(searchOptions) {
             @Override
-            protected void onBindViewHolder(@NonNull FoodViewHolder foodViewHolder, int i, @NonNull Food food) {
+            protected void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, final int i, @NonNull final Food food) {
                 foodViewHolder.foodNameTV.setText(food.getName());
                 Picasso.get().load(food.getImage()).into(foodViewHolder.foodImageView);
 
@@ -196,9 +199,29 @@ public class FoodList extends AppCompatActivity {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull FoodViewHolder foodViewHolder, int i, @NonNull Food food) {
+            protected void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, final int i, @NonNull final Food food) {
                 foodViewHolder.foodNameTV.setText(food.getName());
                 Picasso.get().load(food.getImage()).into(foodViewHolder.foodImageView);
+
+                if (localDatabase.isFav(adapter.getRef(i).getKey())){
+                    foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_black_24dp);
+                }
+
+                foodViewHolder.favIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DynamicToast.makeSuccess(getApplicationContext(), "Yayyy!", Toast.LENGTH_SHORT).show();
+                        if (!localDatabase.isFav(adapter.getRef(i).getKey())){
+                            localDatabase.addFav(adapter.getRef(i).getKey());
+                            foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_black_24dp);
+                            DynamicToast.makeSuccess(getApplicationContext(), ""+ food.getName()+" was added to Favourites", Toast.LENGTH_SHORT).show();
+                        } else {
+                            localDatabase.removeToFavourites(adapter.getRef(i).getKey());
+                            foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                            DynamicToast.makeSuccess(getApplicationContext(), ""+ food.getName()+" was removed Favourites", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
                 final Food local = food;
                 foodViewHolder.setItemClickListener(new ItemClickListener() {
@@ -228,6 +251,14 @@ public class FoodList extends AppCompatActivity {
         super.onStop();
         if (Common.isConnectedToInternet(getApplicationContext())){
             adapter.stopListening();
+        }
+    }
+
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.fav){
+            DynamicToast.makeSuccess(getApplicationContext(), "Yayyy!", Toast.LENGTH_SHORT).show();
         }
     }
 }

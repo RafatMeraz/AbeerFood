@@ -13,10 +13,12 @@ import java.util.List;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "ordermanager";
     private static final String TABLE_CARTS = "carts";
+    private static final String TABLE_FAVS = "fav_list";
     private static final String KEY_ID = "product_id";
+    private static final String FOOD_ID = "food_id";
     private static final String KEY_NAME = "product_name";
     private static final String KEY_QUANTITY = "quantity";
     private static final String KEY_PRICE = "price";
@@ -34,7 +36,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_QUANTITY + " TEXT," + KEY_PRICE + " TEXT,"
                 + KEY_DISCOUNT + " TEXT" + ")";
+        String CREATE_FAVS_TABLE = "CREATE TABLE " + TABLE_FAVS + "("
+                + FOOD_ID + " TEXT PRIMARY KEY" + ")";
         db.execSQL(CREATE_CARTS_TABLE);
+        db.execSQL(CREATE_FAVS_TABLE);
     }
 
     // Upgrading database
@@ -47,7 +52,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // code to add the new contact
+    // code to add the new cart
     public void addCart(Order order) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -64,8 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-
-    // code to get all contacts in a list view
+    // code to get all carts in a list view
     public List<Order> getAllOrders() {
         List<Order> contactList = new ArrayList<Order>();
         // Select All Query
@@ -93,9 +97,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return contactList;
     }
 
+    public void addFav(String foodId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format("INSERT INTO fav_list(food_id) VALUES(%s);", foodId);
+        db.execSQL(query);
+    }
+    public void removeToFavourites(String foodId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = String.format("DELETE FROM fav_list WHERE food_id='%s';", foodId);
+        db.execSQL(query);
+    }
+
     public void deleteCarts() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM "+TABLE_CARTS);
+    }
+
+    public boolean isFav(String foodId){
+        SQLiteDatabase db = getWritableDatabase();
+        String query = String.format("SELECT * FROM fav_list WHERE food_id='%s';", foodId);
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
     }
 
 }
