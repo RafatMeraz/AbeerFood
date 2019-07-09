@@ -110,13 +110,12 @@ public class CartActivity extends AppCompatActivity {
         AlertDialog.Builder alertDia = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.myDialog));
         alertDia.setTitle("One more step!");
         alertDia.setMessage("Enter your address: ");
-        final EditText editText = new EditText(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-        editText.setLayoutParams(lp);
-        alertDia.setView(editText);
+
+        View order_address_comment_view = this.getLayoutInflater().inflate(R.layout.order_address_comment, null);
+        final EditText addressET = order_address_comment_view.findViewById(R.id.addressET);
+        final EditText commentET = order_address_comment_view.findViewById(R.id.commentET);
+
+        alertDia.setView(order_address_comment_view);
         alertDia.setIcon(R.drawable.ic_shopping_cart_black_24dp);
 
         alertDia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -125,10 +124,12 @@ public class CartActivity extends AppCompatActivity {
                 Request request = new Request(
                         currentUser.getUserPhoneNum(),
                         currentUser.getUserName(),
-                        editText.getText().toString(),
+                        addressET.getText().toString(),
                         totalPriceTextView.getText().toString(),
-                        carts,
-                        firebaseAuth.getCurrentUser().getUid()
+                        "0",
+                        firebaseAuth.getCurrentUser().getUid(),
+                        commentET.getText().toString(),
+                        carts
                 );
                 databaseReference.child(String.valueOf(System.currentTimeMillis()))
                         .setValue(request);

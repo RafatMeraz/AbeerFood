@@ -84,8 +84,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Order order = new Order();
                 order.setProductId(cursor.getString(0));
                 order.setProductName(cursor.getString(1));
-                order.setPrice(cursor.getString(2));
-                order.setQuantity(cursor.getString(3));
+                order.setQuantity(cursor.getString(2));
+                order.setPrice(cursor.getString(3));
                 order.setDiscount(cursor.getString(4));
 
                 // Adding orders to list

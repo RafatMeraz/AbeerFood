@@ -3,36 +3,21 @@ package com.practise.eatit.model;
 import java.util.List;
 
 public class Request {
-    private String phone, name, address, total, status, userId;
+    private String phone, name, address, total, status, userId, comment;
     private List<Order>  foods; //list of food order
 
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, List<Order> foods, String userId) {
+    public Request(String phone, String name, String address, String total, String status, String userId, String comment, List<Order> foods) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
-        this.foods = foods;
-        this.userId = userId;
-        this.status = "0";
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
+        this.userId = userId;
+        this.comment = comment;
+        this.foods = foods;
     }
 
     public String getPhone() {
@@ -65,6 +50,30 @@ public class Request {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public List<Order> getFoods() {

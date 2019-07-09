@@ -31,4 +31,8 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="ratingDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@android:color/white</item>
+    </style>
+
 </resources>
