@@ -5,10 +5,17 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.practise.eatit.model.User;
+import com.practise.eatit.remote.APISerivice;
+import com.practise.eatit.remote.RetrofitClient;
 
 public class Common {
 
     public static User currentUser;
+    public static final String  BASE_URL = "https://fcm.googleapis.com/";
+
+    public static APISerivice getFCMService(){
+        return RetrofitClient.getclient(BASE_URL).create(APISerivice.class);
+    }
 
     public static boolean isConnectedToInternet(Context context){
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

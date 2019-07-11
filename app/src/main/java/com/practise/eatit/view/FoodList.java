@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -37,13 +39,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FoodList extends AppCompatActivity implements View.OnClickListener {
+public class FoodList extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String categoryId = "";
     private FirebaseRecyclerAdapter<Food, FoodViewHolder> adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     List<String> suggestList = new ArrayList<>();
     FirebaseRecyclerAdapter<Food, FoodViewHolder> searchAdapter;
@@ -58,26 +61,25 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
         initialization();
     }
 
+    @SuppressLint("ResourceAsColor")
     private void initialization() {
         //Firebase initialization
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Foods");
         localDatabase = new DatabaseHandler(this);
 
+        swipeRefreshLayout = findViewById(R.id.foodListSwipeLayout);
+        swipeRefreshLayout.setColorSchemeColors(
+                R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark
+        );
+
         recyclerView = findViewById(R.id.foodListRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if (getIntent() != null){
-            categoryId = getIntent().getStringExtra("categoryId");
-        }
-        if ( !categoryId.isEmpty() && categoryId != null){
-            if (Common.isConnectedToInternet(getApplicationContext())){
-                loadListFood(categoryId);
-            } else {
-                DynamicToast.makeError(getApplicationContext(), "Please turn on your internet", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        }
+
         materialSearchBar = findViewById(R.id.searchBar);
         materialSearchBar.setHint("Enter your food");
         loadSuggest();
@@ -122,6 +124,36 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
 
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (getIntent() != null){
+                    categoryId = getIntent().getStringExtra("categoryId");
+                }
+                if ( !categoryId.isEmpty() && categoryId != null){
+                    if (Common.isConnectedToInternet(getApplicationContext())){
+                        loadListFood(categoryId);
+                        adapter.startListening();
+                    } else {
+                        DynamicToast.makeError(getApplicationContext(), "Please turn on your internet", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+        });
+
+        if (getIntent() != null) {
+            categoryId = getIntent().getStringExtra("categoryId");
+        }
+        if (!categoryId.isEmpty() && categoryId != null) {
+            if (Common.isConnectedToInternet(getApplicationContext())) {
+                loadListFood(categoryId);
+            } else {
+                DynamicToast.makeError(getApplicationContext(), "Please turn on your internet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
 
     }
 
@@ -181,6 +213,7 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
     }
 
     private void loadListFood(String categoryId) {
+        swipeRefreshLayout.setRefreshing(true);
         FirebaseRecyclerOptions<Food> options =
                 new FirebaseRecyclerOptions.Builder<Food>()
                         .setQuery(
@@ -210,7 +243,6 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
                 foodViewHolder.favIV.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        DynamicToast.makeSuccess(getApplicationContext(), "Yayyy!", Toast.LENGTH_SHORT).show();
                         if (!localDatabase.isFav(adapter.getRef(i).getKey())){
                             localDatabase.addFav(adapter.getRef(i).getKey());
                             foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_black_24dp);
@@ -218,7 +250,7 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
                         } else {
                             localDatabase.removeToFavourites(adapter.getRef(i).getKey());
                             foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                            DynamicToast.makeSuccess(getApplicationContext(), ""+ food.getName()+" was removed Favourites", Toast.LENGTH_SHORT).show();
+                            DynamicToast.makeSuccess(getApplicationContext(), ""+ food.getName()+" was removed from Favourites", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -236,6 +268,7 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
         };
 
         recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -254,11 +287,4 @@ public class FoodList extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.fav){
-            DynamicToast.makeSuccess(getApplicationContext(), "Yayyy!", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

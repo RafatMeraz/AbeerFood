@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,13 +23,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.practise.eatit.R;
 import com.practise.eatit.ViewHolder.CartAdapter;
 import com.practise.eatit.database.DatabaseHandler;
+import com.practise.eatit.model.MyResponse;
+import com.practise.eatit.model.Notification;
 import com.practise.eatit.model.Order;
 import com.practise.eatit.model.Request;
+import com.practise.eatit.model.Sender;
+import com.practise.eatit.model.Token;
 import com.practise.eatit.model.User;
+import com.practise.eatit.remote.APISerivice;
 import com.practise.eatit.utils.Common;
 import com.practise.eatit.utils.CurrentUser;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
@@ -37,6 +44,10 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CartActivity extends AppCompatActivity {
 
@@ -50,6 +61,7 @@ public class CartActivity extends AppCompatActivity {
     private DatabaseHandler db;
     private FirebaseAuth firebaseAuth;
     private User currentUser;
+    private APISerivice mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,8 @@ public class CartActivity extends AppCompatActivity {
         userDataRef = database.getReference("User");
         db = new DatabaseHandler(this);
         currentUser = new CurrentUser().getUserData();
+
+        mService = Common.getFCMService();
 
         recyclerView = findViewById(R.id.listCart);
         recyclerView.setHasFixedSize(true);
@@ -131,11 +145,12 @@ public class CartActivity extends AppCompatActivity {
                         commentET.getText().toString(),
                         carts
                 );
-                databaseReference.child(String.valueOf(System.currentTimeMillis()))
+                String orderNumber = String.valueOf(System.currentTimeMillis());
+                databaseReference.child(orderNumber)
                         .setValue(request);
                 db.deleteCarts();
-                DynamicToast.makeSuccess(getApplicationContext(),"Thank you, Order Placed Sucess!", Toast.LENGTH_SHORT).show();
                 finish();
+                sendNotificationOrder(orderNumber);
             }
         });
 
@@ -147,6 +162,47 @@ public class CartActivity extends AppCompatActivity {
         });
 
         alertDia.show();
+    }
+
+    private void sendNotificationOrder(final String orderNumber) {
+        DatabaseReference tokenDR = FirebaseDatabase.getInstance().getReference("Tokens");
+        Query dataQuery = tokenDR.orderByChild("serverToken").equalTo(true);
+        dataQuery.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot postDatasnapShot: dataSnapshot.getChildren()){
+                    Token serverToken = postDatasnapShot.getValue(Token.class);
+                    //create raw playload to send
+                    Notification notification = new Notification("Abeer Food", "You have new order "+orderNumber);
+                    Sender content = new Sender(serverToken.getToken(), notification);
+
+//                    mService.sendNotification(content)
+//                            .enqueue(new Callback<MyResponse>() {
+//                                @Override
+//                                public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
+//                                    if (response.code() == 200) {
+//                                        if (response.body().success == 1) {
+//                                            DynamicToast.makeSuccess(getApplicationContext(), "Thank you , Order Place", Toast.LENGTH_SHORT).show();
+//                                            finish();
+//                                        } else {
+//                                            DynamicToast.makeError(getApplicationContext(), "Failed!!!", Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<MyResponse> call, Throwable t) {
+//                                    Log.e("ERROR", t.getMessage());
+//                                }
+//                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void loadFoodList() {

@@ -1,19 +1,18 @@
 package com.practise.eatit.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuAdapter;
 import androidx.core.view.GravityCompat;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 
@@ -26,15 +25,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.practise.eatit.R;
-import com.practise.eatit.ViewHolder.CartAdapter;
 import com.practise.eatit.ViewHolder.MenuViewHolder;
 import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Category;
+import com.practise.eatit.model.Token;
 import com.practise.eatit.model.User;
-import com.practise.eatit.services.ListenOrder;
 import com.practise.eatit.utils.Common;
-import com.practise.eatit.view.MainActivity;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +42,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Menu;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
@@ -60,6 +59,7 @@ public class HomeActivity extends AppCompatActivity
     private TextView navEmailTV, navUserNameTV;
     private RecyclerView menuRecyclerView;
     private FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,7 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+    @SuppressLint("ResourceAsColor")
     private void initialization() {
         //firebase initialization
         mAuth = FirebaseAuth.getInstance();
@@ -99,17 +100,42 @@ public class HomeActivity extends AppCompatActivity
         userDataRef = database.getReference("User");
         categoryDataRef = database.getReference("Categories");
         menuRecyclerView = findViewById(R.id.homeRecyclerView);
+        loadUserData();
+
         menuRecyclerView.setHasFixedSize(true);
         menuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        swipeRefreshLayout = findViewById(R.id.homeSwipeLayout);
+        swipeRefreshLayout.setColorSchemeColors(
+                R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark
+        );
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (Common.isConnectedToInternet(getApplicationContext())){
+                    loadMenu();
+                    adapter.startListening();
+                } else {
+                    DynamicToast.makeError(getApplicationContext(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         if (Common.isConnectedToInternet(getApplicationContext())){
             loadMenu();
         } else {
-            DynamicToast.makeError(getApplicationContext(), "Please turn on your internet", Toast.LENGTH_SHORT).show();
-            return;
+
         }
-        loadUserData();
-        Intent service = new Intent(getApplicationContext(), ListenOrder.class);
-        startService(service);
+        updateToken(FirebaseInstanceId.getInstance().getToken());
+    }
+
+    private void updateToken(String token) {
+        FirebaseDatabase db = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = db.getReference("Tokens");
+        Token tokenData = new Token(token, false);
+        databaseReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).setValue(tokenData);
     }
 
 
@@ -150,6 +176,7 @@ public class HomeActivity extends AppCompatActivity
 
         };
         menuRecyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void loadUserData() {

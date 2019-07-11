@@ -15,11 +15,6 @@
         <activity android:name=".view.ForgotPasswordActivity"></activity>
         <activity android:name=".view.OrderStatusActivity" />
 
-        <service
-            android:name=".services.ListenOrder"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity android:name=".view.CartActivity" />
         <activity android:name=".view.FoodDetail" />
         <activity android:name=".view.FoodList" />
@@ -36,6 +31,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".services.MyFirebaseMessaging">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
