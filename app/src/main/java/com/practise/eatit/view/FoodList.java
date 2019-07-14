@@ -47,6 +47,7 @@ import com.practise.eatit.database.DatabaseHandler;
 import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Category;
 import com.practise.eatit.model.Food;
+import com.practise.eatit.model.Order;
 import com.practise.eatit.utils.Common;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.squareup.picasso.Picasso;
@@ -328,6 +329,22 @@ public class FoodList extends AppCompatActivity {
                     public void onClick(View v) {
                         DynamicToast.makeSuccess(getApplicationContext(), "Share button clicked!", Toast.LENGTH_SHORT).show();
                         shareImage(food.getImage(), getApplicationContext());
+                    }
+                });
+
+                foodViewHolder.quickCart.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Order order = new Order(
+                                adapter.getRef(i).getKey(),
+                                food.getName(),
+                                "1",
+                                food.getPrice(),
+                                food.getDiscount()
+                        );
+                        localDatabase.addCart(order);
+                        DynamicToast.makeSuccess(getApplicationContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
+
                     }
                 });
 

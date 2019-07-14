@@ -125,4 +125,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    public int getCountCart() {
+        int count = 0;
+        SQLiteDatabase db = getWritableDatabase();
+        String query = String.format("SELECT COUNT(*) FROM carts");
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){
+            do {
+                count = cursor.getInt(0);
+            } while (cursor.moveToNext());
+        }
+        return count;
+    }
 }

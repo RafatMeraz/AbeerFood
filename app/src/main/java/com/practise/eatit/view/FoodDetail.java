@@ -10,6 +10,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,7 +38,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     private TextView foodNameTV, foodPriceTv, foodDescription;
     private ImageView foodImageView;
     private CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton cartButton, ratingButton;
+    FloatingActionButton ratingButton;
+    private CounterFab cartButton;
     ElegantNumberButton numberButton;
     private RatingBar ratingBar;
 
@@ -102,6 +104,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 DynamicToast.makeSuccess(getApplicationContext(), "Added to Cart", Toast.LENGTH_SHORT).show();
             }
         });
+
+        cartButton.setCount(databaseHandler.getCountCart());
 
         ratingButton.setOnClickListener(new View.OnClickListener() {
             @Override

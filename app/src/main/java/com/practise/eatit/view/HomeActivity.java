@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.andremion.counterfab.CounterFab;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.practise.eatit.R;
 import com.practise.eatit.ViewHolder.MenuViewHolder;
+import com.practise.eatit.database.DatabaseHandler;
 import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Category;
 import com.practise.eatit.model.Token;
@@ -60,10 +62,12 @@ public class HomeActivity extends AppCompatActivity
     private FirebaseDatabase database;
     private DatabaseReference userDataRef, categoryDataRef;
     private User user;
+    private DatabaseHandler db;
     private TextView navEmailTV, navUserNameTV;
     private RecyclerView menuRecyclerView;
     private FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private CounterFab fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +75,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.cartFab);
+        fab = findViewById(R.id.cartFab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +83,9 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        db = new DatabaseHandler(this);
+        fab.setCount(db.getCountCart());
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
@@ -291,5 +298,11 @@ public class HomeActivity extends AppCompatActivity
         if (Common.isConnectedToInternet(getApplicationContext())){
             adapter.stopListening();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fab.setCount(db.getCountCart());
     }
 }
