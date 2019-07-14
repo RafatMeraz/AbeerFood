@@ -8,6 +8,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,12 +41,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -101,9 +105,10 @@ public class HomeActivity extends AppCompatActivity
         categoryDataRef = database.getReference("Categories");
         menuRecyclerView = findViewById(R.id.homeRecyclerView);
         loadUserData();
-
-        menuRecyclerView.setHasFixedSize(true);
-        menuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        menuRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(menuRecyclerView.getContext(),
+                R.anim.layout_fall_down);
+        menuRecyclerView.setLayoutAnimation(controller);
         swipeRefreshLayout = findViewById(R.id.homeSwipeLayout);
         swipeRefreshLayout.setColorSchemeColors(
                 R.color.colorPrimary,
@@ -175,8 +180,12 @@ public class HomeActivity extends AppCompatActivity
             }
 
         };
+        adapter.startListening();
         menuRecyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
+
+        menuRecyclerView.getAdapter().notifyDataSetChanged();
+        menuRecyclerView.scheduleLayoutAnimation();
     }
 
     private void loadUserData() {

@@ -11,6 +11,7 @@
 
     <color name="overlayBackground">#7f333639</color>
     <color name="overlayActionBar">#0e0d0e</color>
+    <color name="transparent_black">#C15A5656</color>
 
     <color name="tel">#008081</color>
     <color name="biscay">#2D3E50</color>

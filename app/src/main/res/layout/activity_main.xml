@@ -3,88 +3,88 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.MainActivity"
-        android:background="@drawable/bg">
+ <androidx.constraintlayout.widget.ConstraintLayout
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
+     tools:context=".view.MainActivity"
+     android:background="@drawable/bg">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+  <androidx.appcompat.widget.LinearLayoutCompat
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:gravity="center_horizontal"
+      android:orientation="horizontal"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signUpButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_weight="1"
-                android:background="@color/biscay"
-                android:elevation="8dp"
-                android:text="@string/sign_up"
-                android:textColor="@android:color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="667dp" />
+   <androidx.appcompat.widget.AppCompatButton
+       android:id="@+id/signUpButton"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:layout_margin="16dp"
+       android:layout_weight="1"
+       android:background="@color/tel"
+       android:elevation="8dp"
+       android:text="@string/sign_up"
+       android:textColor="@android:color/white"
+       app:layout_constraintStart_toStartOf="parent"
+       tools:layout_editor_absoluteY="667dp" />
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/signInButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_weight="1"
-                android:elevation="8dp"
-                android:background="@color/tel"
-                android:text="@string/sign_in"
-                android:textColor="@android:color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginLeft="16dp" />
+   <androidx.appcompat.widget.AppCompatButton
+       android:id="@+id/signInButton"
+       android:layout_width="0dp"
+       android:layout_height="wrap_content"
+       android:layout_margin="16dp"
+       android:layout_marginStart="16dp"
+       android:layout_weight="1"
+       android:elevation="8dp"
+       android:background="@color/biscay"
+       android:text="@string/sign_in"
+       android:textColor="@android:color/white"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintEnd_toEndOf="parent"
+       android:layout_marginLeft="16dp" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+  </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="160dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/abeerlogo" />
+  <ImageView
+      android:id="@+id/imageView"
+      android:layout_width="0dp"
+      android:layout_height="200dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginLeft="8dp"
+      android:layout_marginTop="160dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginRight="8dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/abeerlogo" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="16dp"
+      android:layout_marginRight="16dp"
+      app:layout_constraintTop_toBottomOf="@+id/imageView">
 
-            <TextView
-                android:id="@+id/taglineTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/tag"
-                android:textColor="@color/biscay"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+   <TextView
+       android:id="@+id/taglineTextView"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:gravity="center_horizontal"
+       android:text="@string/tag"
+       android:textColor="@color/biscay"
+       android:textSize="16sp"
+       app:layout_constraintEnd_toEndOf="parent"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+  </LinearLayout>
+ </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

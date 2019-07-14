@@ -7,8 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,6 +24,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +50,15 @@ import com.practise.eatit.model.Food;
 import com.practise.eatit.utils.Common;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.internal.Util;
 
 public class FoodList extends AppCompatActivity {
 
@@ -52,6 +73,34 @@ public class FoodList extends AppCompatActivity {
     FirebaseRecyclerAdapter<Food, FoodViewHolder> searchAdapter;
     MaterialSearchBar materialSearchBar;
     private DatabaseHandler localDatabase;
+    CallbackManager callbackManager;
+    ShareDialog shareDialog;
+
+    Target target = new Target() {
+        @Override
+        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(bitmap)
+                    .build();
+            if (ShareDialog.canShow(SharePhotoContent.class)){
+                SharePhotoContent content = new SharePhotoContent.Builder()
+                        .addPhoto(photo)
+                        .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                        .build();
+                shareDialog.show(content);
+            }
+        }
+
+        @Override
+        public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+        }
+
+        @Override
+        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +116,24 @@ public class FoodList extends AppCompatActivity {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Foods");
         localDatabase = new DatabaseHandler(this);
+        callbackManager = CallbackManager.Factory.create();
+        shareDialog = new ShareDialog(this);
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+
+            }
+        });
 
         swipeRefreshLayout = findViewById(R.id.foodListSwipeLayout);
         swipeRefreshLayout.setColorSchemeColors(
@@ -234,6 +301,7 @@ public class FoodList extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull final FoodViewHolder foodViewHolder, final int i, @NonNull final Food food) {
                 foodViewHolder.foodNameTV.setText(food.getName());
+                foodViewHolder.priceTV.setText(String.format("$ %s", food.getPrice()));
                 Picasso.get().load(food.getImage()).into(foodViewHolder.foodImageView);
 
                 if (localDatabase.isFav(adapter.getRef(i).getKey())){
@@ -252,6 +320,14 @@ public class FoodList extends AppCompatActivity {
                             foodViewHolder.favIV.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                             DynamicToast.makeSuccess(getApplicationContext(), ""+ food.getName()+" was removed from Favourites", Toast.LENGTH_SHORT).show();
                         }
+                    }
+                });
+
+                foodViewHolder.shareIV.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DynamicToast.makeSuccess(getApplicationContext(), "Share button clicked!", Toast.LENGTH_SHORT).show();
+                        shareImage(food.getImage(), getApplicationContext());
                     }
                 });
 
@@ -287,4 +363,47 @@ public class FoodList extends AppCompatActivity {
         }
     }
 
+    static public void shareImage(String url, final Context context) {
+        Picasso.get().load(url).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Intent i =
+                        new Intent(Intent.ACTION_SEND);
+                i.setType(
+                        "image/*");
+                i.putExtra(Intent.
+                        EXTRA_STREAM, getLocalBitmapUri(bitmap, context));
+                context.startActivity(Intent.
+                        createChooser(i, "Share Image"));
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) { }
+        });
+    }
+    static public Uri getLocalBitmapUri(Bitmap bmp, Context context) {
+        Uri bmpUri =
+                null;
+
+        try {
+            File file =
+                    new File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "share_image_" + System.currentTimeMillis() + ".png");
+            FileOutputStream out =
+                    new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.
+                    PNG, 90, out);
+            out.close();
+            bmpUri = Uri.
+                    fromFile(file);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bmpUri;
+    }
 }
