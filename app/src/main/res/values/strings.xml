@@ -31,5 +31,5 @@
   <string name="reset_password">RESET PASSWORD</string>
   <string name="facebook_app_id">2301224870138167</string>
 
-  <integer name="animation_duration_medium">1000</integer>
+  <integer name="animation_duration_medium">800</integer>
 </resources>

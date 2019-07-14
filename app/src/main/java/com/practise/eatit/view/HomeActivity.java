@@ -104,6 +104,40 @@ public class HomeActivity extends AppCompatActivity
         userDataRef = database.getReference("User");
         categoryDataRef = database.getReference("Categories");
         menuRecyclerView = findViewById(R.id.homeRecyclerView);
+        FirebaseRecyclerOptions<Category> options =
+                new FirebaseRecyclerOptions.Builder<Category>()
+                        .setQuery(categoryDataRef, Category.class)
+                        .build();
+
+        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull MenuViewHolder menuViewHolder, int i, @NonNull Category category) {
+
+                Log.e("DATA: ", category.getName());
+
+                menuViewHolder.menuTV.setText(category.getName());
+                Picasso.get().load(category.getImage()).into(menuViewHolder.menuIV);
+
+                final Category clickItem = category;
+                menuViewHolder.setItemClickListener(new ItemClickListener() {
+                    @Override
+                    public void OnClick(View view, int position, boolean isLongClick) {
+                        Intent foodListIntent = new Intent(getApplicationContext(), FoodList.class);
+                        foodListIntent.putExtra("categoryId", adapter.getRef(position).getKey());
+                        startActivity(foodListIntent);
+                    }
+                });
+            }
+            @NonNull
+            @Override
+            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.menu_item, parent, false);
+
+                return new MenuViewHolder(view);
+            }
+
+        };
         loadUserData();
         menuRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(menuRecyclerView.getContext(),
@@ -146,40 +180,6 @@ public class HomeActivity extends AppCompatActivity
 
     private void loadMenu() {
 
-        FirebaseRecyclerOptions<Category> options =
-                new FirebaseRecyclerOptions.Builder<Category>()
-                        .setQuery(categoryDataRef, Category.class)
-                        .build();
-
-        adapter = new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
-            @Override
-            protected void onBindViewHolder(@NonNull MenuViewHolder menuViewHolder, int i, @NonNull Category category) {
-
-                Log.e("DATA: ", category.getName());
-
-                menuViewHolder.menuTV.setText(category.getName());
-                Picasso.get().load(category.getImage()).into(menuViewHolder.menuIV);
-
-                final Category clickItem = category;
-                menuViewHolder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void OnClick(View view, int position, boolean isLongClick) {
-                    Intent foodListIntent = new Intent(getApplicationContext(), FoodList.class);
-                    foodListIntent.putExtra("categoryId", adapter.getRef(position).getKey());
-                    startActivity(foodListIntent);
-                    }
-                });
-            }
-            @NonNull
-            @Override
-            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.menu_item, parent, false);
-
-                return new MenuViewHolder(view);
-            }
-
-        };
         adapter.startListening();
         menuRecyclerView.setAdapter(adapter);
         swipeRefreshLayout.setRefreshing(false);
