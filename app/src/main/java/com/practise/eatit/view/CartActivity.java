@@ -18,6 +18,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.Status;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +48,7 @@ import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,7 +61,7 @@ public class CartActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
     private DatabaseReference databaseReference, userDataRef;
-    private TextView totalPriceTextView;
+    public TextView totalPriceTextView;
     private Button placeOrderButton;
     private List<Order> carts = new ArrayList<>();
     private CartAdapter adapter;
@@ -62,6 +69,7 @@ public class CartActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private User currentUser;
     private APISerivice mService;
+    private Place shippingAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +87,9 @@ public class CartActivity extends AppCompatActivity {
         userDataRef = database.getReference("User");
         db = new DatabaseHandler(this);
         currentUser = new CurrentUser().getUserData();
+        String apiKey = "AIzaSyB-4snKGGRTk9svQJyFHIz0P3kcEa16J3k";
+        Places.initialize(getApplicationContext(), apiKey);
+        PlacesClient placesClient = Places.createClient(this);
 
         mService = Common.getFCMService();
 
@@ -126,7 +137,54 @@ public class CartActivity extends AppCompatActivity {
         alertDia.setMessage("Enter your address: ");
 
         View order_address_comment_view = this.getLayoutInflater().inflate(R.layout.order_address_comment, null);
-        final EditText addressET = order_address_comment_view.findViewById(R.id.addressET);
+        // Initialize the AutocompleteSupportFragment.
+//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+//
+//// Specify the types of place data to return.
+//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//
+//// Set up a PlaceSelectionListener to handle the response.
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//                // TODO: Get info about the selected place.
+//                Log.i("ERROR : ", "Place: " + place.getName() + ", " + place.getId());
+//                shippingAddress = place;
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//                // TODO: Handle the error.
+//                Log.i("ERROR : ", "An error occurred: " + status);
+//            }
+//        });
+//        final EditText addressET = order_address_comment_view.findViewById(R.id.addressET);
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
+        ((EditText) autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input))
+                .setHint("Enter your address");
+        ((EditText) autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input))
+                .setTextSize(14);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                shippingAddress = place;
+                getFragmentManager().beginTransaction()
+                        .remove(getFragmentManager().findFragmentById(R.id.autocomplete_fragment))
+                        .commit();
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.e("ERROR: ", status.getStatusMessage());
+            }
+        });
+
         final EditText commentET = order_address_comment_view.findViewById(R.id.commentET);
 
         alertDia.setView(order_address_comment_view);
@@ -138,11 +196,12 @@ public class CartActivity extends AppCompatActivity {
                 Request request = new Request(
                         currentUser.getUserPhoneNum(),
                         currentUser.getUserName(),
-                        addressET.getText().toString(),
+                        shippingAddress.getAddress().toString(),
                         totalPriceTextView.getText().toString(),
                         "0",
                         firebaseAuth.getCurrentUser().getUid(),
                         commentET.getText().toString(),
+                        String.format("%s, %s", shippingAddress.getLatLng().latitude, shippingAddress.getLatLng().longitude),
                         carts
                 );
                 String orderNumber = String.valueOf(System.currentTimeMillis());
@@ -158,6 +217,9 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+                getFragmentManager().beginTransaction()
+                        .remove(getFragmentManager().findFragmentById(R.id.autocomplete_fragment))
+                        .commit();
             }
         });
 

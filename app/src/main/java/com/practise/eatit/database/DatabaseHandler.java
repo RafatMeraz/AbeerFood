@@ -102,6 +102,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String query = String.format("INSERT INTO fav_list(food_id) VALUES(%s);", foodId);
         db.execSQL(query);
     }
+
     public void removeToFavourites(String foodId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = String.format("DELETE FROM fav_list WHERE food_id='%s';", foodId);
@@ -136,5 +137,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         return count;
+    }
+
+    public void updateCart(Order order) {
+        SQLiteDatabase db = getWritableDatabase();
+        String query = String.format("UPDATE carts SET quantity=%s WHERE product_id=%s", order.getQuantity(), order.getProductId());
+        db.execSQL(query);
     }
 }

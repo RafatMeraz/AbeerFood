@@ -13,20 +13,11 @@
         android:layout_margin="8dp"
         android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
+        <fragment android:id="@+id/autocomplete_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:hintTextColor="@color/biscay">
-
-            <EditText
-                android:id="@+id/addressET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/biscay"
-                android:hint="Address"
-                android:inputType="text"
-                android:textColor="@color/colorPrimary" />
-        </com.google.android.material.textfield.TextInputLayout>
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

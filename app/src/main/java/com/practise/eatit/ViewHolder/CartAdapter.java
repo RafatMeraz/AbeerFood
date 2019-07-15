@@ -14,10 +14,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.practise.eatit.R;
+import com.practise.eatit.database.DatabaseHandler;
 import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Order;
 import com.practise.eatit.utils.Common;
+import com.practise.eatit.view.CartActivity;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -28,7 +31,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         View.OnCreateContextMenuListener {
 
     public TextView cartNameTV, priceTV;
-    public ImageView cartCountIV;
+    public ElegantNumberButton quantityNumberButton;
 
     private ItemClickListener itemClickListener;
 
@@ -37,7 +40,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         super(itemView);
         cartNameTV = itemView.findViewById(R.id.cart_item_name);
         priceTV = itemView.findViewById(R.id.cart_item_price);
-        cartCountIV = itemView.findViewById(R.id.cart_item_count);
+        quantityNumberButton = itemView.findViewById(R.id.quantityNumberButton);
 
         itemView.setOnCreateContextMenuListener(this);
     }
@@ -57,27 +60,45 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder>{
 
     List<Order> orderList;
-    private Context context;
+    private DatabaseHandler db;
+    private CartActivity cartActivity;
 
-    public CartAdapter(List<Order> orderList, Context context) {
+    public CartAdapter(List<Order> orderList, CartActivity cartActivity) {
         this.orderList = orderList;
-        this.context = context;
+        this.cartActivity = cartActivity;
+        db = new DatabaseHandler(cartActivity);
     }
 
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(cartActivity);
         View itemView = inflater.inflate(R.layout.cart_layout, parent, false);
 
         return new CartViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
-        TextDrawable drawable = TextDrawable.builder()
-                .buildRound(""+orderList.get(position).getQuantity(), Color.RED);
-        holder.cartCountIV.setImageDrawable(drawable);
+    public void onBindViewHolder(@NonNull CartViewHolder holder, final int position) {
+
+        holder.quantityNumberButton.setNumber(orderList.get(position).getQuantity());
+        holder.quantityNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
+            @Override
+            public void onValueChange(ElegantNumberButton view, int oldValue, int newValue) {
+                Order order = orderList.get(position);
+                order.setQuantity(String.valueOf(newValue));
+                db.updateCart(order);
+
+                int total = 0;
+                List<Order> orders = db.getAllOrders();
+                for (Order item: orders){
+                    total+=(Integer.parseInt(item.getPrice())*(Integer.parseInt(item.getQuantity())));
+                }
+                Locale locale = new Locale("en", "US");
+                NumberFormat frm = NumberFormat.getCurrencyInstance(locale);
+                cartActivity.totalPriceTextView.setText(frm.format(total));
+            }
+        });
 
         Locale locale = new Locale("en", "US");
         NumberFormat frm = NumberFormat.getCurrencyInstance(locale);
