@@ -47,7 +47,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
     private void sendNotification(RemoteMessage remoteMessage) {
 
-        String Notification_channel_id= "com.example.eatitServer.Service.test";
+        String Notification_channel_id= "com.practise.eatit.ABEERFood";
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             NotificationChannel channel = new NotificationChannel(Notification_channel_id,

@@ -1,24 +1,19 @@
 package com.practise.eatit.model;
 
 public class User {
-    private String userName, userPassword, userPhoneNum, email;
+    private String userName, userPassword, userPhoneNum, email, address,  image;
     private boolean staff;
 
     public User() {
     }
 
-    public User(String userName, String userPassword, String userPhoneNum) {
+    public User(String userName, String userPassword, String userPhoneNum, String email, String address, String image, boolean staff) {
         this.userName = userName;
         this.userPassword = userPassword;
         this.userPhoneNum = userPhoneNum;
-        this.staff = false;
-    }
-
-    public boolean isStaff() {
-        return staff;
-    }
-
-    public void setStaff(boolean staff) {
+        this.email = email;
+        this.address = address;
+        this.image = image;
         this.staff = staff;
     }
 
@@ -52,5 +47,29 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public boolean isStaff() {
+        return staff;
+    }
+
+    public void setStaff(boolean staff) {
+        this.staff = staff;
     }
 }

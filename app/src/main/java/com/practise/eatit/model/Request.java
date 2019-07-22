@@ -3,13 +3,13 @@ package com.practise.eatit.model;
 import java.util.List;
 
 public class Request {
-    private String phone, name, address, total, status, userId, comment, latLng;
+    private String phone, name, address, total, status, userId, comment;
     private List<Order>  foods; //list of food order
 
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, String status, String userId, String comment, String latLng, List<Order> foods) {
+    public Request(String phone, String name, String address, String total, String status, String userId, String comment, List<Order> foods) {
         this.phone = phone;
         this.name = name;
         this.address = address;
@@ -17,7 +17,6 @@ public class Request {
         this.status = status;
         this.userId = userId;
         this.comment = comment;
-        this.latLng = latLng;
         this.foods = foods;
     }
 
@@ -85,11 +84,4 @@ public class Request {
         this.foods = foods;
     }
 
-    public String getLatLng() {
-        return latLng;
-    }
-
-    public void setLatLng(String latLng) {
-        this.latLng = latLng;
-    }
 }

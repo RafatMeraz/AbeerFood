@@ -12,13 +12,28 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:orientation="vertical">
+        <!--<fragment-->
+            <!--android:id="@+id/autocomplete_fragment"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:name=-->
+                <!--"com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+            <!--/>-->
 
-        <fragment android:id="@+id/autocomplete_fragment"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            />
+            app:hintTextColor="@color/biscay">
 
+            <EditText
+                android:id="@+id/orderAddressET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/biscay"
+                android:hint="Address"
+                android:inputType="textMultiLine"
+                android:textColor="@color/colorPrimary" />
+        </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

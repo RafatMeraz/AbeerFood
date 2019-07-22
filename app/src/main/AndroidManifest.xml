@@ -12,17 +12,14 @@
         android:roundIcon="@drawable/abeerlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".view.ProfileActivity"></activity>
 
         <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB-4snKGGRTk9svQJyFHIz0P3kcEa16J3k"/>
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <activity android:name=".view.ForgotPasswordActivity"></activity>
+        <activity android:name=".view.ForgotPasswordActivity" />
         <activity android:name=".view.OrderStatusActivity" />
-
         <activity android:name=".view.CartActivity" />
         <activity android:name=".view.FoodDetail" />
         <activity android:name=".view.FoodList" />
@@ -35,19 +32,23 @@
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <service android:name=".services.MyFirebaseMessaging">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider2301224870138167"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
+            android:authorities="com.facebook.app.FacebookContentProvider2301224870138167"
+            android:exported="true" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCnAshnftutXbB_W5RISmmL4kapxcX2iOc" />
     </application>
 
 </manifest>

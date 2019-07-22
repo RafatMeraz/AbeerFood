@@ -9,18 +9,21 @@
         android:layout_height="match_parent"
         android:background="@android:color/white">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="0dp"
-            android:layout_height="200dp"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/signUpAddImgIV"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="52dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            app:srcCompat="@drawable/abeerlogo"
+            android:clickable="true"
+            android:src="@drawable/person_icon"
+            app:civ_border_color="@color/biscay"
+            app:civ_border_width="3dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.448"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,16 +31,16 @@
             android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:textColorHint="@color/biscay"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout6"
             tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -45,9 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/biscay"
+                android:drawableRight="@drawable/ic_phone_black_24dp"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
-                android:drawableRight="@drawable/ic_phone_black_24dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
@@ -85,19 +88,49 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:textColorHint="@color/biscay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
+            tools:ignore="MissingConstraints">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/signUpAddressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/biscay"
+                android:hint="@string/address"
+                android:drawableRight="@drawable/ic_location_on_black_24dp"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/softWhite"
+                tools:layout_editor_absoluteY="11dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:textColorHint="@color/biscay"
+            android:layout_marginTop="56dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:textColorHint="@color/biscay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/signUpAddImgIV"
             tools:ignore="MissingConstraints">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -105,9 +138,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/biscay"
+                android:drawableRight="@drawable/ic_person_outline_black_24dp"
                 android:hint="@string/full_name"
                 android:inputType="textPersonName"
-                android:drawableRight="@drawable/ic_person_outline_black_24dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="@color/biscay"
                 tools:layout_editor_absoluteY="11dp" />
@@ -161,5 +194,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginLeft="80dp"
+            app:layout_constraintBottom_toBottomOf="@+id/signUpAddImgIV"
+            app:layout_constraintStart_toStartOf="@+id/signUpAddImgIV"
+            app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

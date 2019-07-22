@@ -240,9 +240,9 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            loadMenu();
-            adapter.startListening();
+        if (id == R.id.actionProfile) {
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
@@ -256,14 +256,17 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_menu) {
-
+            loadMenu();
+            adapter.startListening();
         } else if (id == R.id.nav_cart) {
             intent = new Intent(getApplicationContext(), CartActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_orders) {
             intent = new Intent(getApplicationContext(), OrderStatusActivity.class);
             startActivity(intent);
-
+        } else if (id == R.id.nav_profile) {
+            intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_log_out) {
             logOut();
         }

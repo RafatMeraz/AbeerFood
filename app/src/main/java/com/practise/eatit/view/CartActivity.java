@@ -91,6 +91,10 @@ public class CartActivity extends AppCompatActivity {
         Places.initialize(getApplicationContext(), apiKey);
         PlacesClient placesClient = Places.createClient(this);
 
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
         mService = Common.getFCMService();
 
         recyclerView = findViewById(R.id.listCart);
@@ -137,53 +141,43 @@ public class CartActivity extends AppCompatActivity {
         alertDia.setMessage("Enter your address: ");
 
         View order_address_comment_view = this.getLayoutInflater().inflate(R.layout.order_address_comment, null);
+
+
+        final EditText addressET = order_address_comment_view.findViewById(R.id.orderAddressET);
+
+
+        //Start
+
         // Initialize the AutocompleteSupportFragment.
-//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+//        final AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
 //                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 //
-//// Specify the types of place data to return.
 //        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-//
-//// Set up a PlaceSelectionListener to handle the response.
+//        autocompleteFragment.setCountry("BD");
 //        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 //            @Override
 //            public void onPlaceSelected(Place place) {
 //                // TODO: Get info about the selected place.
-//                Log.i("ERROR : ", "Place: " + place.getName() + ", " + place.getId());
 //                shippingAddress = place;
+//                DynamicToast.makeSuccess(getApplicationContext(), ""+place.getAddress(), Toast.LENGTH_SHORT).show();
+//                getSupportFragmentManager().beginTransaction()
+//                        .remove(getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment))
+//                        .commit();
+//
 //            }
 //
 //            @Override
 //            public void onError(Status status) {
 //                // TODO: Handle the error.
-//                Log.i("ERROR : ", "An error occurred: " + status);
+//                DynamicToast.makeSuccess(getApplicationContext(), ""+status.getStatusMessage(), Toast.LENGTH_SHORT).show();
+//                getSupportFragmentManager().beginTransaction()
+//                        .remove(getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment))
+//                        .commit();
 //            }
 //        });
-//        final EditText addressET = order_address_comment_view.findViewById(R.id.addressET);
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
-        autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_button).setVisibility(View.GONE);
-        ((EditText) autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input))
-                .setHint("Enter your address");
-        ((EditText) autocompleteFragment.getView().findViewById(R.id.places_autocomplete_search_input))
-                .setTextSize(14);
+        //Finish
 
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                shippingAddress = place;
-                getFragmentManager().beginTransaction()
-                        .remove(getFragmentManager().findFragmentById(R.id.autocomplete_fragment))
-                        .commit();
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Log.e("ERROR: ", status.getStatusMessage());
-            }
-        });
 
         final EditText commentET = order_address_comment_view.findViewById(R.id.commentET);
 
@@ -196,12 +190,11 @@ public class CartActivity extends AppCompatActivity {
                 Request request = new Request(
                         currentUser.getUserPhoneNum(),
                         currentUser.getUserName(),
-                        shippingAddress.getAddress().toString(),
+                        addressET.getText().toString(),
                         totalPriceTextView.getText().toString(),
                         "0",
                         firebaseAuth.getCurrentUser().getUid(),
                         commentET.getText().toString(),
-                        String.format("%s, %s", shippingAddress.getLatLng().latitude, shippingAddress.getLatLng().longitude),
                         carts
                 );
                 String orderNumber = String.valueOf(System.currentTimeMillis());
@@ -217,9 +210,9 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                getFragmentManager().beginTransaction()
-                        .remove(getFragmentManager().findFragmentById(R.id.autocomplete_fragment))
-                        .commit();
+//                getSupportFragmentManager().beginTransaction()
+//                        .remove(getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment))
+//                        .commit();
             }
         });
 
