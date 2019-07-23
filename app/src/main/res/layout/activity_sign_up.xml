@@ -9,6 +9,22 @@
         android:layout_height="match_parent"
         android:background="@android:color/white">
 
+        <ImageView
+            android:id="@+id/signUpBackButtonIV"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
+
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/signUpAddImgIV"
             android:layout_width="120dp"
@@ -189,7 +205,8 @@
             android:layout_marginBottom="32dp"
             android:background="@color/biscay"
             android:text="@string/sign_in"
-            android:textColor="@android:color/white"
+            android:enabled="false"
+            android:textColor="@color/softBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -203,7 +220,8 @@
             android:layout_marginLeft="80dp"
             app:layout_constraintBottom_toBottomOf="@+id/signUpAddImgIV"
             app:layout_constraintStart_toStartOf="@+id/signUpAddImgIV"
-            app:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
+            app:srcCompat="@drawable/ic_add_circle_outline_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

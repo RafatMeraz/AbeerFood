@@ -10,6 +10,22 @@
         android:background="@android:color/white">
 
         <ImageView
+            android:id="@+id/signInBackIV"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_arrow_back_black_24dp"
+            tools:ignore="VectorDrawableCompat" />
+
+
+        <ImageView
             android:id="@+id/imageView2"
             android:layout_width="0dp"
             android:layout_height="200dp"
@@ -97,7 +113,8 @@
             android:layout_marginBottom="8dp"
             android:text="@string/sign_in"
             android:background="@color/biscay"
-            android:textColor="@android:color/white"
+            android:enabled="false"
+            android:textColor="@color/softBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

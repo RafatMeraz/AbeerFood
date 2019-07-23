@@ -52,6 +52,7 @@ import android.view.Menu;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,6 +69,7 @@ public class HomeActivity extends AppCompatActivity
     private FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CounterFab fab;
+    private ImageView navUserImgIV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +100,7 @@ public class HomeActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         navEmailTV = headerView.findViewById(R.id.navUserEmailTV);
         navUserNameTV = headerView.findViewById(R.id.navUserNameTV);
+        navUserImgIV = headerView.findViewById(R.id.homeUserImgIV);
 
         initialization();
 
@@ -204,6 +207,7 @@ public class HomeActivity extends AppCompatActivity
                     Common.currentUser = user;
                     navUserNameTV.setText(user.getUserName());
                     navEmailTV.setText(mAuth.getCurrentUser().getEmail());
+                    Picasso.get().load(user.getImage()).fit().into(navUserImgIV);
                 }
             }
 

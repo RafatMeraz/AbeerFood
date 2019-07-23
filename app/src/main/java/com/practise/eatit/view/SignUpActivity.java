@@ -13,8 +13,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +44,8 @@ import com.practise.eatit.model.Food;
 import com.practise.eatit.model.User;
 import com.practise.eatit.utils.Common;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+
+import org.w3c.dom.Text;
 
 import java.util.UUID;
 
@@ -72,11 +79,142 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         mStorage = FirebaseStorage.getInstance();
         mfoodSR = mStorage.getReference();
         databaseReference = database.getReference("User");
+
+        signUpBinding.signUpEmailEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        signUpBinding.signUpFullNameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        signUpBinding.signUpAddressEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        signUpBinding.signUpUserPassEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        signUpBinding.signUpPhoneNumEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkInputs();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         signUpBinding.signUpSignButton.setOnClickListener(this);
         signUpBinding.signUpAddImgIV.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         dialog = new ProgressDialog(this);
+        signUpBinding.signUpBackButtonIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
+    }
+
+    private void checkInputs() {
+        if (!TextUtils.isEmpty(signUpBinding.signUpFullNameEditText.getText().toString())) {
+            if (!TextUtils.isEmpty(signUpBinding.signUpEmailEditText.getText().toString()) && Patterns.EMAIL_ADDRESS.matcher(signUpBinding.signUpEmailEditText.getText().toString()).matches()) {
+                if (!TextUtils.isEmpty(signUpBinding.signUpAddressEditText.getText().toString())) {
+                    if (!TextUtils.isEmpty(signUpBinding.signUpPhoneNumEditText.getText().toString())) {
+                        if (!TextUtils.isEmpty(signUpBinding.signUpUserPassEditText.getText().toString()) && (signUpBinding.signUpUserPassEditText.getText().toString().length() >= 6)) {
+
+                            if (saveUri != null) {
+                                signUpBinding.signUpSignButton.setEnabled(true);
+                                signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(android.R.color.white));
+                            } else {
+                                signUpBinding.signUpSignButton.setEnabled(false);
+                                DynamicToast.makeError(getApplicationContext(), "Please select a profile image.", Toast.LENGTH_SHORT).show();
+                                signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+                            }
+                        } else {
+                            signUpBinding.signUpSignButton.setEnabled(false);
+                            signUpBinding.signUpUserPassEditText.setError("Enter your password more than 6 characters.");
+                            signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+                        }
+                    } else {
+                        signUpBinding.signUpSignButton.setEnabled(false);
+                        signUpBinding.signUpPhoneNumEditText.setError("Enter your phone number.");
+                        signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+                    }
+                } else {
+                    signUpBinding.signUpSignButton.setEnabled(false);
+                    signUpBinding.signUpAddressEditText.setError("Enter your address.");
+                    signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+                }
+            } else {
+                signUpBinding.signUpSignButton.setEnabled(false);
+                signUpBinding.signUpEmailEditText.setError("Enter a valid email address.");
+                signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+
+            }
+        } else {
+            signUpBinding.signUpSignButton.setEnabled(false);
+            signUpBinding.signUpFullNameEditText.setError("Enter a your full name.");
+            signUpBinding.signUpSignButton.setTextColor(getApplication().getResources().getColor(R.color.softBlack));
+        }
     }
 
     @Override
