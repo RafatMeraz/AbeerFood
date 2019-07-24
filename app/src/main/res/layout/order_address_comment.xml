@@ -49,5 +49,33 @@
                 android:textColor="@color/colorPrimary" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/shipToaGivenAddressRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ship to Given Address"
+                android:textSize="18sp"
+                android:checked="true"/>
+            <RadioButton
+                android:id="@+id/shipToThisAddressRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ship to Current Location"
+                android:textSize="18sp"/>
+            <RadioButton
+                android:id="@+id/shipToaHomeAddressRadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ship to Home Address"
+                android:textSize="18sp"/>
+
+        </RadioGroup>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

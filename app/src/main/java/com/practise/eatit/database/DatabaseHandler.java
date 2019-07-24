@@ -13,7 +13,7 @@ import java.util.List;
 
 
 public class DatabaseHandler extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "ordermanager";
     private static final String TABLE_CARTS = "carts";
     private static final String TABLE_FAVS = "fav_list";
@@ -23,6 +23,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_QUANTITY = "quantity";
     private static final String KEY_PRICE = "price";
     private static final String KEY_DISCOUNT = "discount";
+    private static final String KEY_IMG = "img";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -35,7 +36,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_CARTS_TABLE = "CREATE TABLE " + TABLE_CARTS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_QUANTITY + " TEXT," + KEY_PRICE + " TEXT,"
-                + KEY_DISCOUNT + " TEXT" + ")";
+                + KEY_DISCOUNT + " TEXT, " + KEY_IMG + " TEXT )";
         String CREATE_FAVS_TABLE = "CREATE TABLE " + TABLE_FAVS + "("
                 + FOOD_ID + " TEXT PRIMARY KEY" + ")";
         db.execSQL(CREATE_CARTS_TABLE);
@@ -62,6 +63,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PRICE, order.getPrice());
         values.put(KEY_QUANTITY, order.getQuantity());
         values.put(KEY_DISCOUNT, order.getDiscount());
+        values.put(KEY_IMG, order.getImage());
 
         // Inserting Row
         db.insert(TABLE_CARTS, null, values);
@@ -87,7 +89,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 order.setQuantity(cursor.getString(2));
                 order.setPrice(cursor.getString(3));
                 order.setDiscount(cursor.getString(4));
-
+                order.setImage(cursor.getString(5));
                 // Adding orders to list
                 contactList.add(order);
             } while (cursor.moveToNext());

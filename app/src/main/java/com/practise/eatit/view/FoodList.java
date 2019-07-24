@@ -340,7 +340,8 @@ public class FoodList extends AppCompatActivity {
                                 food.getName(),
                                 "1",
                                 food.getPrice(),
-                                food.getDiscount()
+                                food.getDiscount(),
+                                food.getImage()
                         );
                         localDatabase.addCart(order);
                         DynamicToast.makeSuccess(getApplicationContext(), "Added to Cart", Toast.LENGTH_SHORT).show();

@@ -98,7 +98,8 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                         currentFood.getName(),
                         numberButton.getNumber(),
                         currentFood.getPrice(),
-                        currentFood.getDiscount()
+                        currentFood.getDiscount(),
+                        currentFood.getImage()
                 );
                 databaseHandler.addCart(order);
                 DynamicToast.makeSuccess(getApplicationContext(), "Added to Cart", Toast.LENGTH_SHORT).show();

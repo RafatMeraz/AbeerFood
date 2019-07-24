@@ -1,7 +1,10 @@
 package com.practise.eatit.ViewHolder;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.graphics.Color;
+import android.media.Image;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +24,7 @@ import com.practise.eatit.interfaces.ItemClickListener;
 import com.practise.eatit.model.Order;
 import com.practise.eatit.utils.Common;
 import com.practise.eatit.view.CartActivity;
+import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
 
     public TextView cartNameTV, priceTV;
     public ElegantNumberButton quantityNumberButton;
+    public ImageView cartImgIV;
 
     private ItemClickListener itemClickListener;
 
@@ -41,6 +46,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         cartNameTV = itemView.findViewById(R.id.cart_item_name);
         priceTV = itemView.findViewById(R.id.cart_item_price);
         quantityNumberButton = itemView.findViewById(R.id.quantityNumberButton);
+        cartImgIV = itemView.findViewById(R.id.cartItemImgIV);
 
         itemView.setOnCreateContextMenuListener(this);
     }
@@ -79,8 +85,14 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CartViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final CartViewHolder holder, final int position) {
 
+        Picasso.get().load(orderList.get(position).getImage())
+                .resize(70, 70)
+                .centerCrop()
+                .into(holder.cartImgIV);
+        int price = (Integer.parseInt((orderList.get(position).getPrice()))*(Integer.parseInt(orderList.get(position).getQuantity())));
+        holder.priceTV.setText(""+price);
         holder.quantityNumberButton.setNumber(orderList.get(position).getQuantity());
         holder.quantityNumberButton.setOnValueChangeListener(new ElegantNumberButton.OnValueChangeListener() {
             @Override
@@ -88,7 +100,8 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder>{
                 Order order = orderList.get(position);
                 order.setQuantity(String.valueOf(newValue));
                 db.updateCart(order);
-
+                int price = (Integer.parseInt((orderList.get(position).getPrice()))*(Integer.parseInt(orderList.get(position).getQuantity())));
+                holder.priceTV.setText(""+price);
                 int total = 0;
                 List<Order> orders = db.getAllOrders();
                 for (Order item: orders){
@@ -102,9 +115,8 @@ public class CartAdapter  extends RecyclerView.Adapter<CartViewHolder>{
 
         Locale locale = new Locale("en", "US");
         NumberFormat frm = NumberFormat.getCurrencyInstance(locale);
-        int price = (Integer.parseInt((orderList.get(position).getPrice()))*(Integer.parseInt(orderList.get(position).getQuantity())));
-        holder.priceTV.setText(""+price);
         holder.cartNameTV.setText(orderList.get(position).getProductName());
+        Log.e("PICS : ", orderList.get(position).getImage());
     }
 
     @Override

@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,7 +145,8 @@ public class CartActivity extends AppCompatActivity {
 
 
         final EditText addressET = order_address_comment_view.findViewById(R.id.orderAddressET);
-
+        RadioButton shipToHomeAddressRB = order_address_comment_view.findViewById(R.id.shipToaHomeAddressRadioButton);
+        RadioButton shipToThisAddressRB = order_address_comment_view.findViewById(R.id.shipToThisAddressRadioButton);
 
         //Start
 
@@ -178,12 +180,16 @@ public class CartActivity extends AppCompatActivity {
 
         //Finish
 
-
         final EditText commentET = order_address_comment_view.findViewById(R.id.commentET);
 
         alertDia.setView(order_address_comment_view);
         alertDia.setIcon(R.drawable.ic_shopping_cart_black_24dp);
-
+        shipToHomeAddressRB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addressET.setText(Common.currentUser.getAddress());
+            }
+        });
         alertDia.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
