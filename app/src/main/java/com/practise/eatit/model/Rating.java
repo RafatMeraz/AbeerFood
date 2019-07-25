@@ -5,14 +5,24 @@ public class Rating {
     private String foodId;
     private String rateValue;
     private String comment;
+    private String email;
 
     public Rating(){}
 
-    public Rating(String phone, String foodId, String rateValue, String comment) {
+    public Rating(String phone, String foodId, String rateValue, String comment, String email) {
         this.phone = phone;
         this.foodId = foodId;
         this.rateValue = rateValue;
         this.comment = comment;
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPhone() {

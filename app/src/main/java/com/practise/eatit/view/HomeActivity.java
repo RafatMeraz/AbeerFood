@@ -7,9 +7,7 @@ import android.os.Bundle;
 import com.andremion.counterfab.CounterFab;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +42,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -132,7 +129,7 @@ public class HomeActivity extends AppCompatActivity
                 menuViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
-                        Intent foodListIntent = new Intent(getApplicationContext(), FoodList.class);
+                        Intent foodListIntent = new Intent(getApplicationContext(), FoodListActivity.class);
                         foodListIntent.putExtra("categoryId", adapter.getRef(position).getKey());
                         startActivity(foodListIntent);
                     }

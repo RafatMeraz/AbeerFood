@@ -3,8 +3,10 @@ package com.practise.eatit.view;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -12,8 +14,11 @@ import android.widget.Toast;
 
 import com.andremion.counterfab.CounterFab;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -33,7 +38,7 @@ import com.stepstone.apprating.listener.RatingDialogListener;
 
 import java.util.Arrays;
 
-public class FoodDetail extends AppCompatActivity implements RatingDialogListener {
+public class FoodDetailActivity extends AppCompatActivity implements RatingDialogListener {
 
     private TextView foodNameTV, foodPriceTv, foodDescription;
     private ImageView foodImageView;
@@ -42,6 +47,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
     private CounterFab cartButton;
     ElegantNumberButton numberButton;
     private RatingBar ratingBar;
+    private Button showCommentButton;
 
     String foodId = "";
     Food currentFood;
@@ -72,6 +78,7 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         foodImageView = findViewById(R.id.img_food);
         ratingButton = findViewById(R.id.btnRating);
         ratingBar = findViewById(R.id.ratingBar);
+        showCommentButton = findViewById(R.id.showCommentButton);
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
         collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -114,6 +121,22 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
                 showRatingDialog();
             }
         });
+        ratingBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showRatingDialog();
+            }
+        });
+        showCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(FoodDetailActivity.this, ShowCommentActivity.class);
+                intent.putExtra(Common.INTENT_FOOD_ID, foodId);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void getRatingFood(String foodId) {
@@ -193,8 +216,20 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
         final Rating rating = new Rating(Common.currentUser.getUserPhoneNum(),
                 foodId,
                 String.valueOf(i),
-                s);
-        ratingDR.child(Common.currentUser.getUserPhoneNum()).addValueEventListener(new ValueEventListener() {
+                s,
+                FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
+        ratingDR.push()
+                .setValue(rating)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        DynamicToast.makeSuccess(getApplicationContext(), "Thanks for your Feedback!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+/*        ratingDR.child(Common.currentUser.getUserPhoneNum()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.child(Common.currentUser.getUserPhoneNum()).exists()){
@@ -210,6 +245,12 @@ public class FoodDetail extends AppCompatActivity implements RatingDialogListene
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+
+
+    }
+
+    public void showRatingDialog(View view) {
+        showRatingDialog();
     }
 }

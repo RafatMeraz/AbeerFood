@@ -12,6 +12,9 @@ import com.practise.eatit.remote.RetrofitClient;
 public class Common {
 
     public static User currentUser;
+
+    public static String INTENT_FOOD_ID = "FoodId";
+
     public static final String  BASE_URL = "https://fcm.googleapis.com/";
     public static final String  GOOGLE_API_URL = "https://maps.googleapis.com/";
 

@@ -12,7 +12,8 @@
         android:roundIcon="@drawable/abeerlogo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ProfileActivity"></activity>
+        <activity android:name=".view.ShowCommentActivity"></activity>
+        <activity android:name=".view.ProfileActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -21,8 +22,8 @@
         <activity android:name=".view.ForgotPasswordActivity" />
         <activity android:name=".view.OrderStatusActivity" />
         <activity android:name=".view.CartActivity" />
-        <activity android:name=".view.FoodDetail" />
-        <activity android:name=".view.FoodList" />
+        <activity android:name=".view.FoodDetailActivity" />
+        <activity android:name=".view.FoodListActivity" />
         <activity
             android:name=".view.HomeActivity"
             android:label="@string/title_activity_home"
@@ -32,9 +33,11 @@
         <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service android:name=".services.MyFirebaseMessaging">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

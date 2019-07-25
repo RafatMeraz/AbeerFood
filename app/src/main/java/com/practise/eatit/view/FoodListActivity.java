@@ -10,15 +10,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +25,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -42,10 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.mancj.materialsearchbar.MaterialSearchBar;
 import com.practise.eatit.R;
 import com.practise.eatit.ViewHolder.FoodViewHolder;
-import com.practise.eatit.ViewHolder.MenuViewHolder;
 import com.practise.eatit.database.DatabaseHandler;
 import com.practise.eatit.interfaces.ItemClickListener;
-import com.practise.eatit.model.Category;
 import com.practise.eatit.model.Food;
 import com.practise.eatit.model.Order;
 import com.practise.eatit.utils.Common;
@@ -59,9 +53,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.internal.Util;
-
-public class FoodList extends AppCompatActivity {
+public class FoodListActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private FirebaseDatabase database;
@@ -243,7 +235,7 @@ public class FoodList extends AppCompatActivity {
                 foodViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
-                        Intent foodDetailIntent = new Intent(getApplicationContext(), FoodDetail.class);
+                        Intent foodDetailIntent = new Intent(getApplicationContext(), FoodDetailActivity.class);
                         foodDetailIntent.putExtra("foodId", searchAdapter.getRef(position).getKey());
                         startActivity(foodDetailIntent);
                     }
@@ -353,7 +345,7 @@ public class FoodList extends AppCompatActivity {
                 foodViewHolder.setItemClickListener(new ItemClickListener() {
                     @Override
                     public void OnClick(View view, int position, boolean isLongClick) {
-                        Intent foodDetailIntent = new Intent(getApplicationContext(), FoodDetail.class);
+                        Intent foodDetailIntent = new Intent(getApplicationContext(), FoodDetailActivity.class);
                         foodDetailIntent.putExtra("foodId", adapter.getRef(position).getKey());
                         startActivity(foodDetailIntent);
                     }
